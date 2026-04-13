@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.example.filmfeed.database.Movies
 import com.example.filmfeed.ui.theme.FilmFeedTheme
@@ -41,7 +40,7 @@ fun FilmFeedApp() {
     Scaffold(
         topBar = { TopBar() }
     ) { innerPadding ->
-        MovieList(
+        ScrollPage(
             movieList = Movies().getMovies(),
             modifier = Modifier.padding(innerPadding)
         )
@@ -50,7 +49,7 @@ fun FilmFeedApp() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(/* TODO */) {
+fun TopBar() {
     CenterAlignedTopAppBar(
         title = {
             Text(
@@ -59,12 +58,13 @@ fun TopBar(/* TODO */) {
                 fontWeight = FontWeight.SemiBold
             ) },
         navigationIcon = {
-            IconButton(onClick = { /* TODO */ }) {
+            IconButton(onClick = { /* TODO: Go to InfoPage */ }) {
                 Icon(
+                    // Show this when currently in DetailsPage to get back to ScrollPage
                     // imageVector = Icons.Default.Home,
-                    // contentDescription = "Go to homepage",
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = "Open menu",
+                    // contentDescription = "Homepage",
+                    imageVector = Icons.Default.Info,
+                    contentDescription = "Developer info",
                     tint = Color.White
                 )
             }
@@ -74,12 +74,4 @@ fun TopBar(/* TODO */) {
             titleContentColor = Color.White
         )
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun FilmFeedAppPreview() {
-    FilmFeedTheme {
-        FilmFeedApp()
-    }
 }
