@@ -19,25 +19,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.filmfeed.models.Movie
 import com.example.filmfeed.utils.Constants
 
-// TODO: Movies should be converted to singleton, so only one instance can exist
 @Composable
-fun ScrollPage(movieList: List<Movie>, modifier: Modifier = Modifier) {
+fun ScrollPage(movieList: List<Movie>, navController: NavController, modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier) {
         items(movieList) { movie ->
-            MovieCard(movie, modifier = Modifier.padding(8.dp))
+            MovieCard(movie, navController, modifier = Modifier.padding(8.dp))
         }
     }
 }
 
 @Composable
-fun MovieCard(movie: Movie, modifier: Modifier = Modifier) {
+fun MovieCard(movie: Movie, navController: NavController, modifier: Modifier = Modifier) {
     Card(modifier = modifier) {
         Row {
-            Button(onClick = { /* TODO: Render DetailsPage and tell Main */ }) {
+            // Clicking a movie navigates to a page with its details
+            Button(onClick = { navController.navigate("details/${movie.id}") }) {
                 Box {
                     AsyncImage(
                         model = Constants.POSTER_IMAGE_BASE_URL

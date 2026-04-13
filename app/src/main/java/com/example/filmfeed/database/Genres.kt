@@ -1,6 +1,6 @@
 package com.example.filmfeed.database
 
-data class Genres(
+object Genres {
     val genreMap: Map<Int, String> = mapOf(
         28 to "Action",
         12 to "Adventure",
@@ -22,7 +22,7 @@ data class Genres(
         10752 to "War",
         37 to "Western"
     )
-) {
+
     fun getGenreNames(genreIDs: Array<Int>): List<String>  {
         return genreIDs.mapNotNull { genreMap[it] }
     }

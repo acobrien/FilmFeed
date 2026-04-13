@@ -51,7 +51,7 @@ fun DetailsPagePreview() {
             Movie(
             id = 1290821,
             title = "Shelter",
-            genres = Genres().getGenreNames(arrayOf(28, 80, 53)),
+            genres = Genres.getGenreNames(arrayOf(28, 80, 53)),
             releaseDate = "2026-01-28",
             overview = "A man living in self-imposed exile on a remote island rescues a young girl from a violent storm, setting off a chain of events that forces him out of seclusion to protect her from enemies tied to his past.",
             posterPath = "/buPFnHZ3xQy6vZEHxbHgL1Pc6CR.jpg",

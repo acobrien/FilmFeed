@@ -59,7 +59,13 @@ dependencies {
     // Extra icons
     implementation(libs.androidx.compose.material.icons.extended)
 
+    // Navigation
+    // implementation("androidx.navigation:navigation-compose:2.9.7")
+    implementation(libs.androidx.navigation.compose)
+
     // Coil
+    // implementation("io.coil-kt.coil3:coil-compose:3.4.0")
+    // implementation("io.coil-kt.coil3:coil-network-okhttp:3.4.0")
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 }
