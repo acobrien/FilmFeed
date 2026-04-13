@@ -1,5 +1,6 @@
 package com.example.filmfeed
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,43 +36,43 @@ fun ScrollPage(movieList: List<Movie>, navController: NavController, modifier: M
 
 @Composable
 fun MovieCard(movie: Movie, navController: NavController, modifier: Modifier = Modifier) {
-    Card(modifier = modifier) {
+    // Clicking a movie navigates to a page with its details
+    Card(modifier = modifier.clickable {
+        navController.navigate("details/${movie.id}")
+    }) {
         Row {
-            // Clicking a movie navigates to a page with its details
-            Button(onClick = { navController.navigate("details/${movie.id}") }) {
-                Box {
-                    AsyncImage(
-                        model = Constants.POSTER_IMAGE_BASE_URL
-                                + Constants.POSTER_IMAGE_BASE_WIDTH
-                                + movie.posterPath,
-                        contentDescription = movie.title,
-                        modifier = modifier
-                            .width(92.dp)
-                            .height(138.dp),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-                Column {
-                    Text( // Title
-                        text = movie.title,
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                    Spacer(modifier = Modifier.size(8.dp))
+            Box {
+                AsyncImage(
+                    model = Constants.POSTER_IMAGE_BASE_URL
+                            + Constants.POSTER_IMAGE_BASE_WIDTH
+                            + movie.posterPath,
+                    contentDescription = movie.title,
+                    modifier = modifier
+                        .width(92.dp)
+                        .height(138.dp),
+                    contentScale = ContentScale.Crop
+                )
+            }
+            Column {
+                Text( // Title
+                    text = movie.title,
+                    style = MaterialTheme.typography.headlineSmall
+                )
+                Spacer(modifier = Modifier.size(8.dp))
 
-                    Text( // Release Date
-                        text = movie.releaseDate,
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                    Spacer(modifier = Modifier.size(8.dp))
+                Text( // Release Date
+                    text = movie.releaseDate,
+                    style = MaterialTheme.typography.bodySmall
+                )
+                Spacer(modifier = Modifier.size(8.dp))
 
-                    Text( // Overview
-                        text = movie.overview,
-                        style = MaterialTheme.typography.bodySmall,
-                        maxLines = 3,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Spacer(modifier = Modifier.size(8.dp))
-                }
+                Text( // Overview
+                    text = movie.overview,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.size(8.dp))
             }
         }
     }
