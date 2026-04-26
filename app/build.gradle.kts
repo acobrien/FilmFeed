@@ -63,4 +63,11 @@ dependencies {
     //implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.coil.compose)
+
+    //RetroFit for API Calls
+    //implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    //implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
 }

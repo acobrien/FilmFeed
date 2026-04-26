@@ -24,3 +24,5 @@ class MovieViewModel : ViewModel(){
         _uiState.update { state -> state.copy(selectedMovie = movie) }
     }
 }
+
+//in the viewModel now we are doing the logic part to separate it from the UI.
