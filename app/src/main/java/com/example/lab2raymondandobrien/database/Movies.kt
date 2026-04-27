@@ -6,17 +6,6 @@ object Movies {
     fun getMovies(): List<Movie>{
         return listOf(
             Movie(
-                id = 1327819,
-                imdbId = "tt26443616",
-                title = "Hoppers",
-                releaseDate = "2026-03-04",
-                genres = listOf("Animation", "Family", "Science Fiction", "Comedy", "Adventure"),
-                overview = "Scientists have discovered how to 'hop' human consciousness into lifelike robotic animals, allowing people to communicate with animals as animals. Animal lover Mabel seizes an opportunity to use the technology, uncovering mysteries within the animal world beyond anything she could have imagined.",
-                homepageUrl = "https://www.pixar.com/hoppers",
-                posterPath = "/xjtWQ2CL1mpmMNwuU5HeS4Iuwuu.jpg",
-                backdropPath = "/u53UYu5XG2hNgWGvs3xGhAVzypl.jpg"
-            ),
-            Movie(
                 id = 1290821,
                 imdbId = "tt32357218",
                 title = "Shelter",
@@ -59,6 +48,17 @@ object Movies {
                 homepageUrl = "https://www.amazon.com/salp/crime101?hhf",
                 posterPath = "/tVvpFIoteRHNnoZMhdnwIVwJpCA.jpg",
                 backdropPath = "/zvGMwQ1mAFrxSzzMFT9WMEl6hxB.jpg"
+            ),
+            Movie(
+                id = 1327819,
+                imdbId = "tt26443616",
+                title = "Hoppers",
+                releaseDate = "2026-03-04",
+                genres = listOf("Animation", "Family", "Science Fiction", "Comedy", "Adventure"),
+                overview = "Scientists have discovered how to 'hop' human consciousness into lifelike robotic animals, allowing people to communicate with animals as animals. Animal lover Mabel seizes an opportunity to use the technology, uncovering mysteries within the animal world beyond anything she could have imagined.",
+                homepageUrl = "https://www.pixar.com/hoppers",
+                posterPath = "/xjtWQ2CL1mpmMNwuU5HeS4Iuwuu.jpg",
+                backdropPath = "/u53UYu5XG2hNgWGvs3xGhAVzypl.jpg"
             )
         )
     }

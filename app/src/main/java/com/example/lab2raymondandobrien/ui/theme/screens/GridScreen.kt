@@ -2,6 +2,8 @@ package com.example.lab2raymondandobrien.ui.theme.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -20,10 +22,12 @@ import com.example.lab2raymondandobrien.utils.Constants
 @Composable
 fun GridScreen(
     movies: List<Movie>,
-    onMovieClick: (Movie) -> Unit
+    onMovieClick: (Movie) -> Unit,
+    modifier: Modifier
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2) // 👉 n = 2
+        columns = GridCells.Fixed(3), //  n = 3
+        modifier = modifier.fillMaxSize()
     ) {
         items(movies) { movie ->
             MovieGridItem(movie, onMovieClick)

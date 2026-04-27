@@ -24,15 +24,16 @@ import androidx.media3.ui.PlayerView
 
 @Composable
 fun ExtraScreen(
-    uiState: MovieUIState
+    uiState: MovieUIState,
+    modifier: Modifier
 ) {
-    Column {
+    Column(modifier.fillMaxSize()){
 
         Text("Reviews")
 
         ReviewList(uiState.reviews)
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         Text("Videos")
 
@@ -65,7 +66,7 @@ fun ReviewList(reviews: List<Review>) {
 @Composable
 fun VideoList() {
     LazyRow {
-        items(3) {
+        items(2) {
             VideoPlayer()
         }
     }

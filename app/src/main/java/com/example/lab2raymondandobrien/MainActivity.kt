@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -95,11 +96,12 @@ fun runApp() {
                         viewModel.setSelectedMovie(movie)
                         viewModel.loadReviews(movie.id)
                         navController.navigate(Routes.DETAIL)
-                    }
+                    },
+                    modifier = Modifier.padding(innerpadding)
                 )
             }
             composable(Routes.EXTRA) {
-                ExtraScreen(uiState = uiState)
+                ExtraScreen(uiState = uiState, modifier = Modifier.padding(innerpadding))
             }
 
         }
@@ -126,8 +128,20 @@ fun MyTopBar(navController: NavHostController){
             }
         },
 
+
+
         //actions stand for the button on the right.
         actions = {
+
+            IconButton(onClick = {
+                navController.navigate(Routes.GRID)
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+                    contentDescription = "Grid View"
+                )
+            }
+
             IconButton(onClick = {
                 navController.navigate(Routes.INFO)
             }) {
