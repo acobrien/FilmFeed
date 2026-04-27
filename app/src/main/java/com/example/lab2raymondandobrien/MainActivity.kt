@@ -32,6 +32,7 @@ import com.example.lab2raymondandobrien.Routes.Routes
 import com.example.lab2raymondandobrien.database.Movies
 import com.example.lab2raymondandobrien.ui.theme.Lab2RaymondAndOBrienTheme
 import com.example.lab2raymondandobrien.ui.theme.screens.DetailScreen
+import com.example.lab2raymondandobrien.ui.theme.screens.ExtraScreen
 import com.example.lab2raymondandobrien.ui.theme.screens.GridScreen
 import com.example.lab2raymondandobrien.ui.theme.screens.InfoScreen
 import com.example.lab2raymondandobrien.ui.theme.screens.ListScreen
@@ -70,6 +71,7 @@ fun runApp() {
                     movies = uiState.movies,
                     onMovieClick = { movie ->
                         viewModel.setSelectedMovie(movie)
+                        viewModel.loadReviews(movie.id)
                         navController.navigate(Routes.DETAIL)
                     },
                     modifier = Modifier.padding(innerpadding)
@@ -78,7 +80,7 @@ fun runApp() {
 
             composable(route = Routes.DETAIL){
                 uiState.selectedMovie?.let { movie ->
-                    DetailScreen(movie = movie, modifier = Modifier.padding(innerpadding))
+                    DetailScreen(movie = movie, navController = navController, modifier = Modifier.padding(innerpadding))
                 }
             }
 
@@ -91,10 +93,15 @@ fun runApp() {
                     movies = uiState.movies,
                     onMovieClick = { movie ->
                         viewModel.setSelectedMovie(movie)
+                        viewModel.loadReviews(movie.id)
                         navController.navigate(Routes.DETAIL)
                     }
                 )
             }
+            composable(Routes.EXTRA) {
+                ExtraScreen(uiState = uiState)
+            }
+
         }
     }
 }

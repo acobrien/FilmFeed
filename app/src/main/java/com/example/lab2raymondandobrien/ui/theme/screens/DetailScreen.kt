@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,11 +22,13 @@ import androidx.compose.ui.unit.dp
 import com.example.lab2raymondandobrien.models.Movie
 import com.example.lab2raymondandobrien.utils.Constants
 import androidx.core.net.toUri
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.lab2raymondandobrien.Routes.Routes
 
 
 @Composable
-fun DetailScreen(movie: Movie, modifier: Modifier){
+fun DetailScreen(movie: Movie, navController: NavController, modifier: Modifier){
 
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
@@ -75,6 +78,16 @@ fun DetailScreen(movie: Movie, modifier: Modifier){
                 context.startActivity(intent)
             }
         )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Button(
+            onClick = {
+                navController.navigate(Routes.EXTRA)
+            }
+        ) {
+            Text("See Reviews & Videos")
+        }
     }
 
 }

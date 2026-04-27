@@ -70,4 +70,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
+    //VideoPlayer
+    //implementation("androidx.media3:media3-exoplayer:1.10.0")
+    //implementation("androidx.media3:media3-ui:1.10.0")
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
 }
