@@ -1,7 +1,5 @@
 package com.example.lab2raymondandobrien.models
 
-import com.example.lab2raymondandobrien.database.MovieEntity
-
 data class MovieListResponse(
     val results: List<ApiMovie>
 )
@@ -15,14 +13,15 @@ data class ApiMovie(
     val backdrop_path: String
 )
 
-fun ApiMovie.toEntity() = MovieEntity(
+fun ApiMovie.toMovie(detail: MovieDetailResponse, position: Int) = Movie(
     id = id,
-    imdbId = "",
+    position = position,
+    imdbId = detail.imdbId,
     title = title,
     releaseDate = release_date,
-    genres = emptyList(),
+    genres = detail.genres.map { it.name },
     overview = overview,
-    homepageUrl = "",
+    homepageUrl = detail.homepage,
     posterPath = poster_path,
     backdropPath = backdrop_path
 )

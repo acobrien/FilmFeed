@@ -1,4 +1,4 @@
-package com.example.lab2raymondandobrien.ui.theme.screens
+﻿package com.example.lab2raymondandobrien.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,8 +23,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
-import com.example.lab2raymondandobrien.database.MovieUIState
 import com.example.lab2raymondandobrien.models.Review
+import com.example.lab2raymondandobrien.viewmodel.MovieUIState
 
 @Composable
 fun ExtraScreen(
@@ -111,3 +111,4 @@ fun VideoPlayer(modifier: Modifier = Modifier) {
             .width(300.dp)
     )
 }
+

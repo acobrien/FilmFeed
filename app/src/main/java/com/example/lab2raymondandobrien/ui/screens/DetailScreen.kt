@@ -1,4 +1,4 @@
-package com.example.lab2raymondandobrien.ui.theme.screens
+﻿package com.example.lab2raymondandobrien.ui.screens
 
 import android.content.Intent
 import androidx.compose.foundation.clickable
@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,10 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
-import com.example.lab2raymondandobrien.Routes.Routes
 import com.example.lab2raymondandobrien.models.Movie
+import com.example.lab2raymondandobrien.routes.Routes
 import com.example.lab2raymondandobrien.utils.Constants
-
 
 @Composable
 fun DetailScreen(movie: Movie, navController: NavController, modifier: Modifier){
@@ -33,7 +34,8 @@ fun DetailScreen(movie: Movie, navController: NavController, modifier: Modifier)
     val uriHandler = LocalUriHandler.current
 
     Column(
-        modifier = modifier.fillMaxSize().padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ){
         AsyncImage(
             model = Constants.POSTER_IMAGE_BASE_URL + Constants.POSTER_IMAGE_BASE_WIDTH + movie.posterPath,
@@ -90,3 +92,4 @@ fun DetailScreen(movie: Movie, navController: NavController, modifier: Modifier)
     }
 
 }
+

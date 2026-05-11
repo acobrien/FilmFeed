@@ -6,7 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -18,20 +19,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.lab2raymondandobrien.Routes.Routes
+import com.example.lab2raymondandobrien.routes.Routes
+import com.example.lab2raymondandobrien.ui.screens.DetailScreen
+import com.example.lab2raymondandobrien.ui.screens.ExtraScreen
+import com.example.lab2raymondandobrien.ui.screens.GridScreen
+import com.example.lab2raymondandobrien.ui.screens.InfoScreen
+import com.example.lab2raymondandobrien.ui.screens.ListScreen
 import com.example.lab2raymondandobrien.ui.theme.Lab2RaymondAndOBrienTheme
-import com.example.lab2raymondandobrien.ui.theme.screens.DetailScreen
-import com.example.lab2raymondandobrien.ui.theme.screens.ExtraScreen
-import com.example.lab2raymondandobrien.ui.theme.screens.GridScreen
-import com.example.lab2raymondandobrien.ui.theme.screens.InfoScreen
-import com.example.lab2raymondandobrien.ui.theme.screens.ListScreen
 import com.example.lab2raymondandobrien.viewmodel.MovieViewModel
 
 class MainActivity : ComponentActivity() {
@@ -41,108 +46,104 @@ class MainActivity : ComponentActivity() {
         setContent {
             Lab2RaymondAndOBrienTheme {
                 RunApp()
-                }
             }
         }
     }
+}
 
 @Composable
 fun RunApp() {
-
     val viewModel: MovieViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
-
     val navController = rememberNavController()
+    var isGridView by remember { mutableStateOf(false) }
 
     Scaffold(
-        topBar = { MyTopBar (navController) }
-    ) {innerpadding ->
+        topBar = {
+            MyTopBar(
+                navController = navController,
+                isGridView = isGridView,
+                onToggleView = { isGridView = !isGridView }
+            )
+        }
+    ) { innerpadding ->
         NavHost(
             navController = navController,
             startDestination = Routes.LIST
-        ){
+        ) {
             composable(Routes.LIST) {
-                ListScreen(
-                    movies = uiState.movies,
-                    onMovieClick = { movie ->
-                        viewModel.setSelectedMovie(movie)
-                        viewModel.loadReviews(movie.id)
-                        navController.navigate(Routes.DETAIL)
-                    },
-                    modifier = Modifier.padding(innerpadding)
-                )
+                if (isGridView) {
+                    GridScreen(
+                        movies = uiState.movies,
+                        viewType = uiState.viewType,
+                        onViewTypeChange = viewModel::switchViewType,
+                        onMovieClick = { movie ->
+                            viewModel.setSelectedMovie(movie)
+                            viewModel.loadReviews(movie.id)
+                            navController.navigate(Routes.DETAIL)
+                        },
+                        modifier = Modifier.padding(innerpadding)
+                    )
+                } else {
+                    ListScreen(
+                        movies = uiState.movies,
+                        viewType = uiState.viewType,
+                        onViewTypeChange = viewModel::switchViewType,
+                        onMovieClick = { movie ->
+                            viewModel.setSelectedMovie(movie)
+                            viewModel.loadReviews(movie.id)
+                            navController.navigate(Routes.DETAIL)
+                        },
+                        modifier = Modifier.padding(innerpadding)
+                    )
+                }
             }
 
-            composable(route = Routes.DETAIL){
+            composable(Routes.DETAIL) {
                 uiState.selectedMovie?.let { movie ->
                     DetailScreen(movie = movie, navController = navController, modifier = Modifier.padding(innerpadding))
                 }
             }
 
-            composable(Routes.INFO){
+            composable(Routes.INFO) {
                 InfoScreen(modifier = Modifier.padding(innerpadding))
             }
 
-            composable(Routes.GRID) {
-                GridScreen(
-                    movies = uiState.movies,
-                    onMovieClick = { movie ->
-                        viewModel.setSelectedMovie(movie)
-                        viewModel.loadReviews(movie.id)
-                        navController.navigate(Routes.DETAIL)
-                    },
-                    modifier = Modifier.padding(innerpadding)
-                )
-            }
             composable(Routes.EXTRA) {
                 ExtraScreen(uiState = uiState, modifier = Modifier.padding(innerpadding))
             }
-
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopBar(navController: NavHostController){
+fun MyTopBar(navController: NavHostController, isGridView: Boolean, onToggleView: () -> Unit) {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    val isOnList = currentRoute == Routes.LIST
+    val isOnInfo = currentRoute == Routes.INFO
+
     CenterAlignedTopAppBar(
-        title = {
-            Text("My Movie App")
-        },
-
-        //NavigationIcon stands for the button on the left.
+        title = { Text("FilmFeed") },
         navigationIcon = {
-            IconButton(onClick = {
-                navController.navigate(Routes.LIST){ popUpTo(Routes.LIST) }
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = "Home"
-                )
+            if (isOnList) {
+                IconButton(onClick = onToggleView) {
+                    Icon(
+                        imageVector = if (isGridView) Icons.Default.Menu else Icons.Default.GridView,
+                        contentDescription = if (isGridView) "List View" else "Grid View"
+                    )
+                }
+            } else {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                }
             }
         },
-
-
-
-        //actions stand for the button on the right.
         actions = {
-
             IconButton(onClick = {
-                navController.navigate(Routes.GRID)
+                if (!isOnInfo) navController.navigate(Routes.INFO) { popUpTo(Routes.LIST) }
             }) {
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = "Grid View"
-                )
-            }
-
-            IconButton(onClick = {
-                navController.navigate(Routes.INFO)
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Info,
-                    contentDescription = "Info"
-                )
+                Icon(imageVector = Icons.Default.Info, contentDescription = "Info")
             }
         }
     )

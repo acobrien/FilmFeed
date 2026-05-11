@@ -1,7 +1,12 @@
 package com.example.lab2raymondandobrien.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "movies")
 data class Movie(
-    var id: Long = 0L,
+    @PrimaryKey var id: Long = 0L,
+    var position: Int = 0,  // Display order
     var imdbId: String = "",
     var title: String = "",
     var releaseDate: String = "",
@@ -10,10 +15,6 @@ data class Movie(
     var homepageUrl: String = "",
     var posterPath: String = "",
     var backdropPath: String = ""
-){
-    fun getImdbUrl(): String{
-        return "https://www.imdb.com/title/$imdbId/"
-    }
+) {
+    fun getImdbUrl(): String = "https://www.imdb.com/title/$imdbId/"
 }
-
-

@@ -24,6 +24,16 @@ interface MovieApiService {
         @Query("api_key") apiKey: String
     ): MovieListResponse
 
+    @GET("movie/upcoming")
+    suspend fun getUpcomingMovies(
+        @Query("api_key") apiKey: String
+    ): MovieListResponse
+
+    @GET("movie/now_playing")
+    suspend fun getNowPlayingMovies(
+        @Query("api_key") apiKey: String
+    ): MovieListResponse
+
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(
         @Path("movie_id") movieId: Long,
