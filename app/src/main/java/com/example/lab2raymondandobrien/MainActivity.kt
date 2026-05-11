@@ -46,7 +46,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-
 @Composable
 fun RunApp() {
 
