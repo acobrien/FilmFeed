@@ -1,7 +1,6 @@
 package com.example.lab2raymondandobrien.ui.theme.screens
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,12 +18,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
-import com.example.lab2raymondandobrien.models.Movie
-import com.example.lab2raymondandobrien.utils.Constants
 import androidx.core.net.toUri
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.lab2raymondandobrien.Routes.Routes
+import com.example.lab2raymondandobrien.models.Movie
+import com.example.lab2raymondandobrien.utils.Constants
 
 
 @Composable

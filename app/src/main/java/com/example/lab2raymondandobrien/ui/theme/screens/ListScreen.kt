@@ -1,6 +1,5 @@
 package com.example.lab2raymondandobrien.ui.theme.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,10 +18,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.lab2raymondandobrien.models.Movie
 import com.example.lab2raymondandobrien.utils.Constants
@@ -33,7 +30,7 @@ fun ListScreen(
     onMovieClick: (Movie) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn (modifier = modifier.fillMaxSize().background(Color.Red), contentPadding = PaddingValues(top = 8.dp)) {
+    LazyColumn (modifier = modifier.fillMaxSize(), contentPadding = PaddingValues(top = 8.dp)) {
         items(movies) { movie ->
             MovieItem(movie, onMovieClick)
         }

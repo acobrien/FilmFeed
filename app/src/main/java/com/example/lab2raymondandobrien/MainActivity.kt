@@ -4,12 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -22,15 +21,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.lab2raymondandobrien.Routes.Routes
-import com.example.lab2raymondandobrien.database.Movies
 import com.example.lab2raymondandobrien.ui.theme.Lab2RaymondAndOBrienTheme
 import com.example.lab2raymondandobrien.ui.theme.screens.DetailScreen
 import com.example.lab2raymondandobrien.ui.theme.screens.ExtraScreen
@@ -45,7 +40,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Lab2RaymondAndOBrienTheme {
-                runApp()
+                RunApp()
                 }
             }
         }
@@ -53,7 +48,7 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun runApp() {
+fun RunApp() {
 
     val viewModel: MovieViewModel = viewModel()
     val uiState by viewModel.uiState.collectAsState()
@@ -137,7 +132,7 @@ fun MyTopBar(navController: NavHostController){
                 navController.navigate(Routes.GRID)
             }) {
                 Icon(
-                    imageVector = Icons.Default.Favorite,
+                    imageVector = Icons.Default.Menu,
                     contentDescription = "Grid View"
                 )
             }
@@ -158,6 +153,6 @@ fun MyTopBar(navController: NavHostController){
 @Composable
 fun GreetingPreview() {
     Lab2RaymondAndOBrienTheme {
-        runApp()
+        RunApp()
     }
 }
