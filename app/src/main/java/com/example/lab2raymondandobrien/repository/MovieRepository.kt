@@ -31,9 +31,11 @@ class MovieRepository(db: MovieDatabase) {
             dao.deleteAll()
             dao.insertAll(movies)
             movies
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            e.printStackTrace()
             null
         }
+
     }
 
     suspend fun getCachedMovies(): List<Movie> = dao.getAll()

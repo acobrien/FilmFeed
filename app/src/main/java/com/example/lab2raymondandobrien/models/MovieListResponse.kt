@@ -16,7 +16,7 @@ data class ApiMovie(
 fun ApiMovie.toMovie(detail: MovieDetailResponse, position: Int) = Movie(
     id = id,
     position = position,
-    imdbId = detail.imdbId,
+    imdbId = detail.imdb_id ?: "",
     title = title,
     releaseDate = release_date,
     genres = detail.genres.map { it.name },
