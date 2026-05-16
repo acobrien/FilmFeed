@@ -21,11 +21,10 @@ class MovieRepository(db: MovieDatabase) {
                 else         -> api.getNowPlayingMovies(Constants.API_KEY)
             }
 
-            // One detail call per movie to populate genres, IMDB ID, and homepage.
-            // The detail screen needs these fields.
             val movies = response.results.mapIndexed { index, apiMovie ->
                 val detail = api.getMovieDetails(apiMovie.id, Constants.API_KEY)
-                apiMovie.toMovie(detail, index)
+                val reviews = try { api.getReviews(apiMovie.id, Constants.API_KEY).results } catch (e: Exception) { emptyList() }
+                apiMovie.toMovie(detail, index).copy(reviews = reviews)
             }
 
             dao.deleteAll()

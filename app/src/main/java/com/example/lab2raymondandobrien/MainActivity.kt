@@ -79,7 +79,6 @@ fun RunApp() {
                         onViewTypeChange = viewModel::switchViewType,
                         onMovieClick = { movie ->
                             viewModel.setSelectedMovie(movie)
-                            viewModel.loadReviews(movie.id)
                             navController.navigate(Routes.DETAIL)
                         },
                         modifier = Modifier.padding(innerpadding)
@@ -91,7 +90,6 @@ fun RunApp() {
                         onViewTypeChange = viewModel::switchViewType,
                         onMovieClick = { movie ->
                             viewModel.setSelectedMovie(movie)
-                            viewModel.loadReviews(movie.id)
                             navController.navigate(Routes.DETAIL)
                         },
                         modifier = Modifier.padding(innerpadding)

@@ -1,16 +1,20 @@
 package com.example.lab2raymondandobrien.viewmodel
 
 import android.app.Application
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.Constraints
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.example.lab2raymondandobrien.database.MovieDatabase
 import com.example.lab2raymondandobrien.models.Movie
-import com.example.lab2raymondandobrien.remote.RetroFitInstance
 import com.example.lab2raymondandobrien.repository.MovieRepository
-import com.example.lab2raymondandobrien.utils.Constants
+import com.example.lab2raymondandobrien.worker.MovieSyncWorker
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,41 +26,43 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     val uiState: StateFlow<MovieUIState> = _uiState.asStateFlow()
 
     private val repository = MovieRepository(MovieDatabase.getInstance(application))
-
-    // Tracks which view type is currently stored in the DB so offline fallback
-    // only serves cache when it matches what was requested.
+    private val workManager = WorkManager.getInstance(application)
     private var cachedViewType = "popular"
-
-    private val connectivityManager =
-        application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-    // Automatically reloads the current view type when connectivity is restored.
-    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) {
-            loadMovies(uiState.value.viewType)
-        }
-    }
+    private var loadJob: Job? = null
 
     init {
-        connectivityManager.registerDefaultNetworkCallback(networkCallback)
+        viewModelScope.launch {
+            workManager.getWorkInfosForUniqueWorkFlow("movie_sync")
+                .collect { infos ->
+                    if (infos.firstOrNull()?.state == WorkInfo.State.SUCCEEDED) {
+                        _uiState.update { it.copy(movies = repository.getCachedMovies()) }
+                    }
+                }
+        }
         loadMovies("popular")
+        enqueueSync("popular")
+    }
+
+    private fun enqueueSync(viewType: String) {
+        val request = OneTimeWorkRequestBuilder<MovieSyncWorker>()
+            .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
+            .setInputData(workDataOf("viewType" to viewType))
+            .build()
+        workManager.enqueueUniqueWork("movie_sync", ExistingWorkPolicy.REPLACE, request)
     }
 
     private fun loadMovies(viewType: String) {
-        viewModelScope.launch {
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
             val result = repository.getMovies(viewType)
             when {
-                // Network success: update DB record and show results.
                 result != null -> {
                     cachedViewType = viewType
                     _uiState.update { it.copy(movies = result) }
                 }
-                // Offline, same type as cache: serve the cached list.
                 viewType == cachedViewType -> {
                     _uiState.update { it.copy(movies = repository.getCachedMovies()) }
                 }
-                // Offline, different type: show empty so the UI displays "no connection"
-                // rather than showing the wrong cached list mislabeled as a different type.
                 else -> {
                     _uiState.update { it.copy(movies = emptyList()) }
                 }
@@ -67,25 +73,10 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     fun switchViewType(viewType: String) {
         _uiState.update { it.copy(viewType = viewType) }
         loadMovies(viewType)
+        enqueueSync(viewType)
     }
 
     fun setSelectedMovie(movie: Movie) {
-        _uiState.update { state -> state.copy(selectedMovie = movie) }
-    }
-
-    fun loadReviews(movieId: Long) {
-        viewModelScope.launch {
-            try {
-                val response = RetroFitInstance.api.getReviews(movieId, Constants.API_KEY)
-                _uiState.update { state -> state.copy(reviews = response.results) }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        connectivityManager.unregisterNetworkCallback(networkCallback)
+        _uiState.update { state -> state.copy(selectedMovie = movie, reviews = movie.reviews) }
     }
 }

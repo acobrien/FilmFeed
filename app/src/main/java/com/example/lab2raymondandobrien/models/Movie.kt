@@ -14,7 +14,8 @@ data class Movie(
     var overview: String = "",
     var homepageUrl: String = "",
     var posterPath: String = "",
-    var backdropPath: String = ""
+    var backdropPath: String = "",
+    var reviews: List<Review> = emptyList()
 ) {
     fun getImdbUrl(): String = "https://www.imdb.com/title/$imdbId/"
 }
